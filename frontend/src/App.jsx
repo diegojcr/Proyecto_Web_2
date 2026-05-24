@@ -11,6 +11,11 @@ import Register from './pages/auth/Register'
 import ProtectedRoute from './components/ProtectedRoute'
 import Dashboard from './pages/dashboard/Dashboard'
 import Tracking from './pages/tracking/Tracking'
+import AdminDashboard from './pages/admin/AdminDashboard'
+import AdminUsers from './pages/admin/AdminUsers'
+import AdminShipments from './pages/admin/AdminShipments'
+
+
 
 function Landing() {
   return (
@@ -43,6 +48,23 @@ export default function App() {
       <ProtectedRoute>
         <Tracking />
       </ProtectedRoute>} />
+
+      <Route path="/admin/dashboard" element={
+      <ProtectedRoute soloAdmin={true}>
+        <AdminDashboard />
+      </ProtectedRoute>
+    } />
+
+      <Route path="/admin/users" element={
+      <ProtectedRoute soloAdmin={true}>
+        <AdminUsers />
+      </ProtectedRoute>
+    } />
+      <Route path="/admin/shipments" element={
+      <ProtectedRoute soloAdmin={true}>
+        <AdminShipments />
+      </ProtectedRoute>
+    } />
     </Routes>
     
   )
