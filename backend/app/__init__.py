@@ -57,5 +57,22 @@ def create_app():
     @app.route("/")
     def index():
         return {"message": "SkyShip API corriendo", "status": "ok"}
+    
+    # WebSocket - sala de rastreo por codigo de guia
+    @socketio.on("join")
+    def on_join(data):
+        from flask_socketio import join_room
+        room = data.get("codigo_guia")
+        if room:
+            join_room(room)
+
+    @socketio.on("leave")
+    def on_leave(data):
+        from flask_socketio import leave_room
+        room = data.get("codigo_guia")
+        if room:
+            leave_room(room)
+
+    return app
 
     return app
