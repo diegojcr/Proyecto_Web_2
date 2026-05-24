@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Package, Plus, LogOut, MapPin, Calendar, DollarSign, Search } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
+import { useNavigate } from 'react-router-dom'
 import api from '../../services/api'
 import CrearEnvio from './CrearEnvio'
 
@@ -15,6 +16,7 @@ const estadoColor = {
 
 export default function Dashboard() {
   const { usuario, logout } = useAuth()
+  const navigate = useNavigate()
   const [envios, setEnvios] = useState([])
   const [cargando, setCargando] = useState(true)
   const [mostrarCrear, setMostrarCrear] = useState(false)
@@ -70,10 +72,25 @@ export default function Dashboard() {
             </span>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <span style={{ fontSize: 14, color: '#94a3b8' }}>
               Hola, <strong style={{ color: '#f1f5f9' }}>{usuario?.nombre_completo?.split(' ')[0]}</strong>
             </span>
+
+            <button
+              onClick={() => navigate('/tracking')}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 6,
+                backgroundColor: 'transparent', border: '1px solid #1e293b',
+                color: '#94a3b8', padding: '7px 14px', borderRadius: 6,
+                fontSize: 13, cursor: 'pointer', transition: 'all 0.2s',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#38bdf8'; e.currentTarget.style.color = '#38bdf8' }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#1e293b'; e.currentTarget.style.color = '#94a3b8' }}
+            >
+              <Search size={14} /> Rastrear
+            </button>
+
             <button
               onClick={logout}
               style={{
