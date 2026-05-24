@@ -10,6 +10,7 @@ import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
 import ProtectedRoute from './components/ProtectedRoute'
 import Dashboard from './pages/dashboard/Dashboard'
+import Tracking from './pages/tracking/Tracking'
 
 function Landing() {
   return (
@@ -37,6 +38,12 @@ export default function App() {
       <ProtectedRoute>
         <Dashboard />
       </ProtectedRoute>} />
+
+      <Route path="/tracking" element={
+      <ProtectedRoute>
+        <Tracking />
+      </ProtectedRoute>} />
     </Routes>
+    
   )
 }
