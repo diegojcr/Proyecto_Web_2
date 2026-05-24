@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
-import { Menu, X, Package } from 'lucide-react'
+import { Menu, X, Package, LogIn, UserPlus, LayoutDashboard } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 const links = [
   { label: 'Servicios', href: '#services' },
@@ -11,6 +13,8 @@ const links = [
 export default function Navbar() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const { usuario } = useAuth()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -27,11 +31,7 @@ export default function Navbar() {
   return (
     <nav
       style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 50,
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
         transition: 'all 0.3s ease',
         backgroundColor: scrolled ? 'rgba(8,13,26,0.95)' : 'transparent',
         backdropFilter: scrolled ? 'blur(12px)' : 'none',
@@ -40,7 +40,7 @@ export default function Navbar() {
     >
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 72 }}>
-          {/* Logo */}
+
           <a
             href="#"
             onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
@@ -58,7 +58,6 @@ export default function Navbar() {
             </span>
           </a>
 
-          {/* Desktop links */}
           <div style={{ display: 'flex', gap: 36, alignItems: 'center' }} className="desktop-nav">
             {links.map((l) => (
               <a
@@ -76,23 +75,60 @@ export default function Navbar() {
                 {l.label}
               </a>
             ))}
-            <a
-              href="#contact"
-              onClick={(e) => handleLink(e, '#contact')}
-              style={{
-                backgroundColor: '#38bdf8', color: '#080d1a',
-                padding: '8px 20px', borderRadius: 6, fontSize: 14,
-                fontWeight: 600, textDecoration: 'none',
-                transition: 'background-color 0.2s',
-              }}
-              onMouseEnter={(e) => e.target.style.backgroundColor = '#7dd3fc'}
-              onMouseLeave={(e) => e.target.style.backgroundColor = '#38bdf8'}
-            >
-              Cotizar envío
-            </a>
+
+            {usuario ? (
+              <button
+                onClick={() => navigate(usuario.rol === 'Administrador' ? '/admin/dashboard' : '/dashboard')}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 7,
+                  backgroundColor: '#38bdf8', color: '#080d1a',
+                  padding: '8px 18px', borderRadius: 6, fontSize: 14,
+                  fontWeight: 600, border: 'none', cursor: 'pointer',
+                  transition: 'background-color 0.2s',
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#7dd3fc'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#38bdf8'}
+              >
+                <LayoutDashboard size={15} />
+                Mi cuenta
+              </button>
+            ) : (
+              <div style={{ display: 'flex', gap: 10 }}>
+                <Link
+                  to="/login"
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 7,
+                    backgroundColor: 'transparent',
+                    border: '1px solid #1e293b',
+                    color: '#f1f5f9', padding: '8px 18px', borderRadius: 6,
+                    fontSize: 14, fontWeight: 600, textDecoration: 'none',
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#38bdf8'; e.currentTarget.style.color = '#38bdf8' }}
+                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#1e293b'; e.currentTarget.style.color = '#f1f5f9' }}
+                >
+                  <LogIn size={15} />
+                  Iniciar sesion
+                </Link>
+                <Link
+                  to="/register"
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 7,
+                    backgroundColor: '#38bdf8', color: '#080d1a',
+                    padding: '8px 18px', borderRadius: 6, fontSize: 14,
+                    fontWeight: 600, textDecoration: 'none',
+                    transition: 'background-color 0.2s',
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#7dd3fc'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#38bdf8'}
+                >
+                  <UserPlus size={15} />
+                  Registrarse
+                </Link>
+              </div>
+            )}
           </div>
 
-          {/* Mobile hamburger */}
           <button
             onClick={() => setOpen(!open)}
             style={{
@@ -106,7 +142,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {open && (
         <div style={{
           backgroundColor: '#0d1628',
@@ -127,18 +162,51 @@ export default function Navbar() {
               {l.label}
             </a>
           ))}
-          <a
-            href="#contact"
-            onClick={(e) => handleLink(e, '#contact')}
-            style={{
-              display: 'block', marginTop: 16, textAlign: 'center',
-              backgroundColor: '#38bdf8', color: '#080d1a',
-              padding: '12px', borderRadius: 6, fontSize: 15,
-              fontWeight: 600, textDecoration: 'none',
-            }}
-          >
-            Cotizar envío
-          </a>
+
+          {usuario ? (
+            <button
+              onClick={() => { setOpen(false); navigate(usuario.rol === 'Administrador' ? '/admin/dashboard' : '/dashboard') }}
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7,
+                width: '100%', marginTop: 16,
+                backgroundColor: '#38bdf8', color: '#080d1a',
+                padding: '12px', borderRadius: 6, fontSize: 15,
+                fontWeight: 600, border: 'none', cursor: 'pointer',
+              }}
+            >
+              <LayoutDashboard size={15} />
+              Mi cuenta
+            </button>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 16 }}>
+              <Link
+                to="/login"
+                onClick={() => setOpen(false)}
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7,
+                  border: '1px solid #1e293b', color: '#f1f5f9',
+                  padding: '12px', borderRadius: 6, fontSize: 15,
+                  fontWeight: 600, textDecoration: 'none', textAlign: 'center',
+                }}
+              >
+                <LogIn size={15} />
+                Iniciar sesion
+              </Link>
+              <Link
+                to="/register"
+                onClick={() => setOpen(false)}
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7,
+                  backgroundColor: '#38bdf8', color: '#080d1a',
+                  padding: '12px', borderRadius: 6, fontSize: 15,
+                  fontWeight: 600, textDecoration: 'none', textAlign: 'center',
+                }}
+              >
+                <UserPlus size={15} />
+                Registrarse
+              </Link>
+            </div>
+          )}
         </div>
       )}
 
