@@ -39,11 +39,12 @@ def create_app():
 
   
 
-    # CORS: solo acepta peticiones del frontend
-    CORS(app, origins=["http://localhost:5173"])
+    # CORS: acepta peticiones del frontend (local o produccion via FRONTEND_URL)
+    frontend_url = os.getenv("FRONTEND_URL", "http://localhost:5173")
+    CORS(app, origins=[frontend_url])
 
     # WebSocket
-    socketio.init_app(app, cors_allowed_origins="http://localhost:5173")
+    socketio.init_app(app, cors_allowed_origins=frontend_url)
 
     # Registrar blueprints
     from .blueprints.auth import auth_bp

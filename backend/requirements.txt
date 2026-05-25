@@ -1,5 +1,6 @@
 alembic==1.18.4
 bcrypt==5.0.0
+eventlet==0.40.1
 bidict==0.23.1
 blinker==1.9.0
 click==8.4.1
@@ -9,6 +10,7 @@ flask-cors==6.0.2
 Flask-SocketIO==5.6.1
 Flask-SQLAlchemy==3.1.1
 greenlet==3.5.1
+gunicorn==23.0.0
 h11==0.16.0
 itsdangerous==2.2.0
 Jinja2==3.1.6
