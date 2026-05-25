@@ -14,7 +14,7 @@ import Tracking from './pages/tracking/Tracking'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import AdminUsers from './pages/admin/AdminUsers'
 import AdminShipments from './pages/admin/AdminShipments'
-import AdminMessages from './pages/admin/AdminMessages'
+import AdminMessages from './pages/admin/Adminmessages'
 
 
 function Landing() {
