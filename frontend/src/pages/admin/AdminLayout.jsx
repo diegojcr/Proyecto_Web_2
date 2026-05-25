@@ -1,11 +1,12 @@
 import { NavLink, useNavigate } from 'react-router-dom'
-import { Package, Users, LayoutDashboard, LogOut, Truck } from 'lucide-react'
+import { Package, Users, LayoutDashboard, LogOut, Truck, MessageSquare } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 
 const navLinks = [
-  { to: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/admin/users',     icon: Users,           label: 'Usuarios'  },
-  { to: '/admin/shipments', icon: Truck,           label: 'Envíos'    },
+  { to: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard'  },
+  { to: '/admin/users',     icon: Users,           label: 'Usuarios'   },
+  { to: '/admin/shipments', icon: Truck,           label: 'Envíos'     },
+  { to: '/admin/messages',  icon: MessageSquare,   label: 'Mensajes'   },
 ]
 
 export default function AdminLayout({ children }) {

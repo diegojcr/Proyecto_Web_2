@@ -14,7 +14,7 @@ import Tracking from './pages/tracking/Tracking'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import AdminUsers from './pages/admin/AdminUsers'
 import AdminShipments from './pages/admin/AdminShipments'
-
+import AdminMessages from './pages/admin/AdminMessages'
 
 
 function Landing() {
@@ -39,33 +39,42 @@ export default function App() {
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+
       <Route path="/dashboard" element={
-      <ProtectedRoute>
-        <Dashboard />
-      </ProtectedRoute>} />
+        <ProtectedRoute>
+          <Dashboard />
+        </ProtectedRoute>
+      } />
 
       <Route path="/tracking" element={
-      <ProtectedRoute>
-        <Tracking />
-      </ProtectedRoute>} />
+        <ProtectedRoute>
+          <Tracking />
+        </ProtectedRoute>
+      } />
 
       <Route path="/admin/dashboard" element={
-      <ProtectedRoute soloAdmin={true}>
-        <AdminDashboard />
-      </ProtectedRoute>
-    } />
+        <ProtectedRoute soloAdmin={true}>
+          <AdminDashboard />
+        </ProtectedRoute>
+      } />
 
       <Route path="/admin/users" element={
-      <ProtectedRoute soloAdmin={true}>
-        <AdminUsers />
-      </ProtectedRoute>
-    } />
+        <ProtectedRoute soloAdmin={true}>
+          <AdminUsers />
+        </ProtectedRoute>
+      } />
+
       <Route path="/admin/shipments" element={
-      <ProtectedRoute soloAdmin={true}>
-        <AdminShipments />
-      </ProtectedRoute>
-    } />
+        <ProtectedRoute soloAdmin={true}>
+          <AdminShipments />
+        </ProtectedRoute>
+      } />
+
+      <Route path="/admin/messages" element={
+        <ProtectedRoute soloAdmin={true}>
+          <AdminMessages />
+        </ProtectedRoute>
+      } />
     </Routes>
-    
   )
 }

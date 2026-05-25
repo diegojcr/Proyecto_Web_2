@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Send, CheckCircle, MapPin, Phone, Mail } from 'lucide-react'
+import api from '../services/api'
 
 const initialForm = {
   name: '', email: '', phone: '', subject: '', message: '',
@@ -61,22 +62,29 @@ export default function Contact() {
   const set = (field) => (e) => {
     setForm((f) => ({ ...f, [field]: e.target.value }))
     if (errors[field]) setErrors((er) => ({ ...er, [field]: undefined }))
+    if (errors.general) setErrors((er) => ({ ...er, general: undefined }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const errs = validate(form)
     if (Object.keys(errs).length) { setErrors(errs); return }
 
     setLoading(true)
-    // Simulate async submit — will be replaced by API call when backend is ready
-    setTimeout(() => {
-      const saved = JSON.parse(localStorage.getItem('skyship_contacts') || '[]')
-      saved.push({ ...form, createdAt: new Date().toISOString() })
-      localStorage.setItem('skyship_contacts', JSON.stringify(saved))
-      setLoading(false)
+    try {
+      await api.post('/shipments/contact', {
+        nombre_remitente: form.name,
+        correo_remitente: form.email,
+        telefono:         form.phone,
+        asunto:           form.subject,
+        mensaje:          form.message,
+      })
       setSubmitted(true)
-    }, 900)
+    } catch (err) {
+      setErrors({ general: err.response?.data?.error || 'Error al enviar el mensaje. Intenta de nuevo.' })
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -188,6 +196,19 @@ export default function Contact() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+
+                {/* Error general de API */}
+                {errors.general && (
+                  <div style={{
+                    backgroundColor: 'rgba(248,113,113,0.1)',
+                    border: '1px solid rgba(248,113,113,0.3)',
+                    borderRadius: 8, padding: '12px 16px',
+                    color: '#f87171', fontSize: 13,
+                  }}>
+                    {errors.general}
+                  </div>
+                )}
+
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }} className="form-grid">
                   <Field label="Nombre completo *" error={errors.name}>
                     <input
